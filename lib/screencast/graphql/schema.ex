@@ -1,20 +1,7 @@
 defmodule Screencast.GraphQL.Schema do
   use Absinthe.Schema
 
-  @desc "A screencast episode. Belongs to a series."
-  object :episode do
-    field :id, :integer
-    field :title, :string
-  end
-
-  @desc "An episode series, like LearnPhoenix."
-  object :series do
-    field :id, :integer
-    field :title, :string
-    field :episodes, list_of(:episode) do
-      resolve &Screencast.GraphQL.EpisodeResolver.assoc/2
-    end
-  end
+  import_types Screencast.GraphQL.Types
 
   query do
     @desc "Lists all the series in the system."
