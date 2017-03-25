@@ -1,12 +1,6 @@
 defmodule Screencast.GraphQL.Schema do
   use Absinthe.Schema
 
-  alias Screencast.{
-    Episode,
-    Series,
-    Repo
-  }
-
   @desc "A screencast episode. Belongs to a series."
   object :episode do
     field :id, :integer
@@ -18,19 +12,14 @@ defmodule Screencast.GraphQL.Schema do
     field :id, :integer
     field :title, :string
     field :episodes, list_of(:episode) do
-      resolve fn(args, %{source: series}) ->
-        series = Repo.preload(series, :episodes)
-        {:ok, series.episodes}
-      end
+      resolve &Screencast.GraphQL.EpisodeResolver.assoc/2
     end
   end
 
   query do
     @desc "Lists all the series in the system."
     field :series, list_of(:series) do
-      resolve fn(_args, _context) ->
-        {:ok, Repo.all(Series) }
-      end
+      resolve &Screencast.GraphQL.SeriesResolver.list/2
     end
   end
 
@@ -39,10 +28,7 @@ defmodule Screencast.GraphQL.Schema do
     field :create_series, :series do
       arg :title, non_null(:string)
 
-      resolve fn(%{title: title}, _context) ->
-        series = Repo.insert! %Series{title: title}
-        {:ok, series}
-      end
+      resolve &Screencast.GraphQL.SeriesResolver.create/2
     end
 
     @desc "Creates an episode for a given series."
@@ -51,10 +37,7 @@ defmodule Screencast.GraphQL.Schema do
       arg :id, non_null(:integer)
       arg :title, non_null(:string)
 
-      resolve fn(%{id: id, title: title}, _context) ->
-        episode = Repo.insert! %Episode{series_id: id, title: title}
-        {:ok, episode}
-      end
+      resolve &Screencast.GraphQL.EpisodeResolver.create/2
     end
   end
 end
