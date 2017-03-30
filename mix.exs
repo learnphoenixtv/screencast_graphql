@@ -34,7 +34,8 @@ defmodule Screencast.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:absinthe_plug, "~> 1.2.3"}]
+     {:absinthe_plug, "~> 1.2.3"},
+     {:distillery, "~> 1.3"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
