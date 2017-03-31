@@ -16,7 +16,9 @@ use Mix.Config
 config :screencast, Screencast.Web.Endpoint,
   on_init: {Screencast.Web.Endpoint, :load_from_system_env, []},
   url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  server: true,
+  root: ".",
+  version: Mix.Project.config[:version]
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -57,8 +59,12 @@ config :logger, level: :info
 # start per endpoint:
 #
 #     config :screencast, Screencast.Web.Endpoint, server: true
-#
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
+# Configure your database
+config :screencast, Screencast.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "screencast_prod",
+  hostname: "localhost",
+  pool_size: 10

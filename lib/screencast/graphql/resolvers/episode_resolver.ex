@@ -7,7 +7,7 @@ defmodule Screencast.GraphQL.EpisodeResolver do
     Repo
   }
 
-  def assoc(_args, %{source: series} = context) do
+  def assoc(_args, %{source: series}) do
     batch {__MODULE__, :by_series_id}, series.id, fn results ->
       {:ok, Map.get(results, series.id)}
     end
