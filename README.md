@@ -8,7 +8,17 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+## Distillery
+
+To build a production Distillery release:
+
+```
+$ MIX_ENV=prod mix do ecto.create, ecto.migrate
+$ MIX_ENV=prod mix release --env prod
+$ PORT=4000 _build/prod/rel/screencast/bin/screencast foreground
+```
+
+Then visit <http://localhost:4000/graphql> to play with it.
 
 ## Learn more
 
